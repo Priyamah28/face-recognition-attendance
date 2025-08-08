@@ -1,0 +1,93 @@
+from tkinter import*
+from tkinter import ttk
+from PIL import Image,ImageTk
+from tkinter import messagebox
+import numpy as np
+import mysql.connector
+import cv2
+import os
+
+
+class Train:
+    def __init__(self,root):
+        self.root=root
+        self.root.geometry("1530x790+0+0")
+        self.root.title("Face Recognition System")
+
+        title_label = Label(self.root,
+                            text="TRAIN DATA SET",
+                            font=("Helvetica", 38, "bold"), bg="light blue", fg="#da16c6",bd=4, relief=RIDGE)
+        title_label.place(x=0, y=0, width=1530, height=45)
+
+        img_top=Image.open(r"college_images/facialrecognition.png")
+        img_top=img_top.resize((1530,325))
+        self.photoimg_top=ImageTk.PhotoImage(img_top)
+
+        f_lbl=Label(self.root,image=self.photoimg_top)
+        f_lbl.place(x=0,y=55,width=1530,height=325)
+
+        b2_1=Button(self.root,text="TRAIN DATA",cursor="hand2",command=self.train_classification,font=("Helvetica", 15, "bold"), bg="light blue", fg="#da16c6",bd=4, relief=RIDGE)
+        b2_1.place(x=0,y=380,width=1530,height=50)
+
+        img_bottom=Image.open(r"college_images/opencv_face_reco_more_data.jpg")
+        img_bottom=img_bottom.resize((1530,325))
+        self.photoimg_bottom=ImageTk.PhotoImage(img_bottom)
+
+        f_lbl=Label(self.root,image=self.photoimg_bottom) 
+        f_lbl.place(x=0,y=430,width=1530,height=325)
+
+        #lbph algo
+
+    def train_classification(self):
+        data_dir=("data")
+        path=[os.path.join(data_dir ,file) for file in os.listdir(data_dir)]
+
+        faces=[]
+        ids=[]
+
+        for image_path in path:
+            '''img=Image.open(image).convert('L') #gray scale image
+            imageNp=np.array(img,'uint8')
+            id=int(os.path.split(image)[1].split('.')[1])
+
+
+            faces.append(imageNp)
+            ids.append(id)
+            cv2.imshow("training",imageNp)
+            cv2.waitKey(1)==13'''
+            try:
+                img = Image.open(image_path).convert('L')  # Grayscale
+                image_np = np.array(img, 'uint8')
+                
+                # Extract ID from filename (e.g., user.1.jpg → ID = 1)
+                id = int(os.path.split(image_path)[1].split('.')[1])
+
+                faces.append(image_np)
+                ids.append(id)
+
+                cv2.imshow("Training", image_np)
+                cv2.waitKey(1)
+            except Exception as e:
+                print(f"Error processing {image_path}: {e}")
+                continue
+    
+        ids=np.array(ids)
+
+        #train the classifier and saave
+    
+        clf=cv2.face.LBPHFaceRecognizer_create() 
+        clf.train(faces,ids)
+        clf.write("classifier.xml")
+        cv2.destroyAllWindows()
+        messagebox.showinfo("result","train data done")
+
+
+
+
+
+
+
+if __name__=="__main__":
+    root=Tk()
+    obj=Train(root)
+    root.mainloop()
