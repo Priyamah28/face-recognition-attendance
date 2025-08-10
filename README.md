@@ -29,11 +29,6 @@ This project is useful for:
 **Tools**: VS Code / PyCharm, MySQL Workbench, Git
 
 
-## ⚙️ Installation & Setup
-```bash
-git clone https://github.com/Priyamah28/face-recognition-attendance.git
-cd face-recognition-attendance
-
 ## Screenshots
 
 ### Main Dashboard
@@ -68,4 +63,9 @@ Future enhancements can include adding deep learning-based face recognition mode
 👩‍💻 Author
 Priya Maheswari
 📧 priyamh000128@gmail.com
+
+## ⚙️ Installation & Setup
+```bash
+git clone https://github.com/Priyamah28/face-recognition-attendance.git
+cd face-recognition-attendance
 
